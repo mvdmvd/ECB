@@ -1,0 +1,684 @@
+
+
+```{r}
+open2008 <- vars_2008 %>% select(c(3,10,9)) %>% setNames(c("Imports from China", "Exports to China", "Chinese FDI Stock")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+
+open2014 <- vars_2014 %>% select(c(3,10,9)) %>% setNames(c("Imports from China", "Exports to China", "Chinese FDI Stock")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+
+open2016 <- vars_2016 %>% select(c(3,10,9)) %>% setNames(c("Imports from China", "Exports to China", "Chinese FDI Stock")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+
+open2020 <- vars_2020 %>% select(c(3,10,9)) %>% setNames(c("Imports from China", "Exports to China", "Chinese FDI Stock")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+
+```
+
+
+
+
+
+```{r}
+bars2008 <- ggplot(open2008, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 2. Individual Vulnerability Index components 2008") +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Chinese FDI Stock" = "green")) + labs(fill = "Component")+ ylim(0,0.06)+theme_light() +
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+    label = "Data sources: AEI China Global Investment Tracker, UN COMTRADE",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+
+bars2008
+
+bars2014 <-ggplot(open2014, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 6. Individual Vulnerability Index components 2014") +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Chinese FDI Stock" = "green")) + labs(fill = "Component")+ ylim(0,0.25)+theme_light()+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+    label = "Data sources: AEI China Global Investment Tracker, UN COMTRADE",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+bars2014
+
+bars2016 <-ggplot(open2016, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 10. Individual Vulnerability Index components 2016") +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Chinese FDI Stock" = "green")) + labs(fill = "Component")+ ylim(0,0.25)+theme_light()+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+    label = "Data sources: AEI China Global Investment Tracker, UN COMTRADE",   # Specify the text label
+   hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+bars2016 
+
+bars2020 <-ggplot(open2020, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 7. Individual Vulnerability Index components 2020") +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Chinese FDI Stock" = "green")) + labs(fill = "Component")+ ylim(0,0.25) +theme_light()+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+    label = "Data sources: AEI China Global Investment Tracker, UN COMTRADE",   # Specify the text label
+   hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+bars2020
+```
+```{r}
+res2008 <- data2008 %>% select(c(4,5,6)) %>% setNames(c("Macroeconomic stability", "Microeconomic efficiency", "Good governance")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country) %>% filter(Country %in% c("CZE", "GRC", "HUN", "MNE", "SRB", "SVK"))
+
+res2014 <- data2014 %>% select(c(4,5,6)) %>% setNames(c("Macroeconomic stability", "Microeconomic efficiency", "Good governance")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)%>% filter(Country %in% c("EST", "GRC", "SVK", "POL", "CZE", "MNE"))
+
+res2016 <- data2016 %>% select(c(4,5,6)) %>% setNames(c("Macroeconomic stability", "Microeconomic efficiency", "Good governance")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country) %>% filter(Country %in% c( "CZE", "HUN", "MKD", "MNE"))
+
+res2020 <- data2020 %>% select(c(4,5,6)) %>% setNames(c("Macroeconomic stability", "Microeconomic efficiency", "Good governance")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)%>% filter(Country %in% c( "EST", "SRB", "MNE", "MKD", "GRC", "POL"))
+
+```
+```{r}
+ggsave("bars2008.png", plot = bars2008, width = 9, height = 6, dpi = 300)
+ggsave("bars2014.png", plot = bars2014, width = 9, height = 6, dpi = 300)
+ggsave("bars2016.png", plot = bars2016, width = 9, height = 6, dpi = 300)
+ggsave("bars2020.png", plot = bars2020, width = 9, height = 6, dpi = 300)
+```
+```{r}
+rbars2008 <- ggplot(res2008, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "Standerdized score", title = "Figure 5. Resilience component scores 2008") +
+  scale_fill_manual(values = c("Macroeconomic stability" = "lightblue", "Microeconomic efficiency" = "pink", "Good governance" = "lightgreen")) + labs(fill = "Component") + theme_light() +
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+     label = "Data sources: Fraser's Institute, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+rbars2008
+
+rbars2014 <-ggplot(res2014, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "Standerdized score", title = "Figure 9. Resilience component scores 2014") +
+  scale_fill_manual(values = c("Macroeconomic stability" = "lightblue", "Microeconomic efficiency" = "pink", "Good governance" = "lightgreen")) + labs(fill = "Component") + theme_light() +
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+     label = "Data sources: Fraser's Institute, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+rbars2014
+
+rbars2016 <-ggplot(res2016, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "Standerdized score", title = "Figure 13. Resilience component scores 2016") +
+  scale_fill_manual(values = c("Macroeconomic stability" = "lightblue", "Microeconomic efficiency" = "pink", "Good governance" = "lightgreen")) + labs(fill = "Component") + theme_light()+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+     label = "Data sources: Fraser's Institute, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+rbars2016 
+
+rbars2020 <-ggplot(res2020, aes(x = Country, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Country", y = "Standerdized score", title = "Figure 9. Resilience component scores 2020") +
+  scale_fill_manual(values = c("Macroeconomic stability" = "lightblue", "Microeconomic efficiency" = "pink", "Good governance" = "lightgreen")) + labs(fill = "Component") + theme_light()+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+    label = "Data sources: Fraser's Institute, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+rbars2020
+```
+
+
+
+```{r}
+ggsave("rbars2008.png", plot = rbars2008, width = 9, height = 6, dpi = 300)
+ggsave("rbars2014.png", plot = rbars2014, width = 9, height = 6, dpi = 300)
+ggsave("rbars2016.png", plot = rbars2016, width = 9, height = 6, dpi = 300)
+ggsave("rbars2020.png", plot = rbars2020, width = 9, height = 6, dpi = 300)
+```
+
+
+
+```{r}
+plot_list <- list()
+
+for (year in 2007:2020) {
+
+  plot <- ggplot(get(paste0("m_", year)), aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle(paste0("Vulnerability Risk to China in Central and Eastern Europe, ", year)) +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case")
+  
+
+  assign(paste0("plot", year), plot)
+  
+
+  plot_list[[year]] <- plot
+}
+
+
+for (year in 2007:2020) {
+  ggsave(filename = paste0("plot", year, ".png"), plot = plot_list[[year]], width = 10, height = 8)
+}
+
+```
+```{r}
+ggsave("plot2008.png", plot = plot2008, width = 9, height = 6, dpi = 300)
+ggsave("plot2012.png", plot = plot2012, width = 9, height = 6, dpi = 300)
+ggsave("plot2016.png", plot = plot2016, width = 9, height = 6, dpi = 300)
+ggsave("plot2020.png", plot = plot2020, width = 9, height = 6, dpi = 300)
+```
+```{r}
+open2008
+```
+```{r}
+plot2008title <- ggplot(m_2008, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle("Figure 4. Vulnerability Risk Matrix 2008") +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08
+           , fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.7,    # Adjust vertical justification to align the text to the bottom
+    size = 3     # Adjust the font size of the text
+  ) 
+plot2008title
+ggsave("plot2008title.png", plot = plot2008title, width = 9, height = 6, dpi = 300)
+
+
+plot2012title <- ggplot(m_2012, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle("Figure 7. Vulnerability Risk Matrix 2012") +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08
+           , fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.7,    # Adjust vertical justification to align the text to the bottom
+    size = 3     # Adjust the font size of the text
+  ) 
+plot2012title
+ggsave("plot2012title.png", plot = plot2012title, width = 9, height = 6, dpi = 300)
+
+plot2014title <- ggplot(m_2014, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle("Figure 7. Vulnerability Risk Matrix 2014") +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08
+           , fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.7,    # Adjust vertical justification to align the text to the bottom
+    size = 3     # Adjust the font size of the text
+  ) 
+plot2014title
+ggsave("plot2014title.png", plot = plot2014title, width = 9, height = 6, dpi = 300)
+
+plot2020title <- ggplot(m_2020, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle("Figure 12. Vulnerability Risk Matrix 2020") +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08
+           , fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.7,    # Adjust vertical justification to align the text to the bottom
+    size = 3     # Adjust the font size of the text
+  ) 
+plot2020title
+ggsave("plot2020title.png", plot = plot2020title, width = 9, height = 6, dpi = 300)
+```
+
+
+```{r}
+vars_2008
+```
+
+
+```{r}
+comp2008 <- vars_2008 %>% select(c(3,10)) %>% setNames(c("Imports from China", "Exports to China")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+ comp2008.1 <- vars_2008 %>% select(c(2,1)) %>% setNames(c("Total Imports", "Total Exports"))  %>%
+  gather(key = "variable2", value = "value2")
+ comp2008 <- comp2008 %>% cbind(comp2008.1)
+ 
+comp2014 <- vars_2014 %>% select(c(3,10)) %>% setNames(c("Imports from China", "Exports to China")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+ comp2014.1 <- vars_2014 %>% select(c(2,1)) %>% setNames(c("Total Imports", "Total Exports"))  %>%
+  gather(key = "variable2", value = "value2")
+ comp2014 <- comp2014 %>% cbind(comp2014.1)
+ 
+ comp2016 <- vars_2016 %>% select(c(3,10)) %>% setNames(c("Imports from China", "Exports to China")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+ comp2016.1 <- vars_2016 %>% select(c(2,1)) %>% setNames(c("Total Imports", "Total Exports"))  %>%
+  gather(key = "variable2", value = "value2")
+ comp2016 <- comp2016 %>% cbind(comp2016.1)
+ 
+ comp2020 <- vars_2020 %>% select(c(3,10)) %>% setNames(c("Imports from China", "Exports to China")) %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>%
+  gather(key = "variable", value = "value", -Country)
+ comp2020.1 <- vars_2020 %>% select(c(2,1)) %>% setNames(c("Total Imports", "Total Exports"))  %>%
+  gather(key = "variable2", value = "value2")
+ comp2020 <- comp2020 %>% cbind(comp2020.1)
+```
+
+
+
+```{r}
+flows2008 <- ggplot(comp2008, aes(ymin = 0))+
+  labs(x = "Country", y = "ratio to GDPP", title = "Figure 3. Chinese trade flows compared to total trade flows, % of GDP 2008")  + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value2, fill = variable2), alpha = 0.5) + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value, fill = variable))   +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Total Imports" = "pink", "Total Exports" = "lightblue")) + labs(fill = "")  + theme_light() + ylim(0,1)+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+label = "Data sources: UN COMTRADE, World Bank",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+flows2008
+
+flows2014 <- ggplot(comp2014, aes(ymin = 0))+
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 8. Chinese trade flows compared to total trade flows, % of GDP 2014")  + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value2, fill = variable2), alpha = 0.5) + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value, fill = variable))   +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Total Imports" = "pink", "Total Exports" = "lightblue")) + labs(fill = "")  + theme_light() + ylim(0,1)+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+label = "Data sources: UN COMTRADE, World Bank",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+flows2014
+
+flows2016 <- ggplot(comp2016, aes(ymin = 0))+
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 12. Chinese trade flows compared to total trade flows, % of GDP 2016")  + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value2, fill = variable2), alpha = 0.5) + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value, fill = variable))   +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Total Imports" = "pink", "Total Exports" = "lightblue")) + labs(fill = "")  + theme_light() + ylim(0,1)+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+  label = "Data sources: UN COMTRADE, World Bank",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+flows2016
+
+flows2020 <- ggplot(comp2020, aes(ymin = 0))+
+  labs(x = "Country", y = "ratio to GDP", title = "Figure 6. Chinese trade flows compared to total trade flows, % of GDP 2020")  + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value2, fill = variable2), alpha = 0.5) + geom_bar(stat = "identity", position = "dodge", aes(x = Country, y = value, fill = variable))  +
+  scale_fill_manual(values = c("Imports from China" = "red", "Exports to China" = "blue", "Total Imports" = "pink", "Total Exports" = "lightblue")) + labs(fill = "")  + theme_light() + ylim(0,1)+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: UN COMTRADE, World Bank",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.5,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+flows2020
+
+```
+```{r}
+
+ggsave("flows2008.png", plot = flows2008, width = 9, height = 6, dpi = 300)
+ggsave("flows2014.png", plot = flows2014, width = 9, height = 6, dpi = 300)
+ggsave("flows2016.png", plot = flows2016, width = 9, height = 6, dpi = 300)
+ggsave("flows2020.png", plot = flows2020, width = 9, height = 6, dpi = 300)
+```
+
+```{r}
+vavg <- list(c(mean(m_2008$Vulnerability), mean(m_2012$Vulnerability), mean(m_2016$Vulnerability), mean(m_2020$Vulnerability))) %>% as.data.frame() %>% setNames("Vulnerability Average")
+vavg
+```
+```{r}
+years <- 2008:2020
+
+vavg <- bind_rows(lapply(years, function(year) {
+  mean(get(paste0("m_", year))$Vulnerability) %>% tibble()
+}), .id = "Year") %>% setNames(c("Year", "Vulnerability Average"))
+
+
+vavg
+```
+```{r}
+library(dplyr)
+
+years <- 2008:2020
+
+data <- lapply(years, function(year) {
+  v_avg <- mean(get(paste0("m_", year))$Vulnerability)
+  r_avg <- mean(get(paste0("m_", year))$Resilience)
+  tibble(Year = year, "Vulnerability Average" = v_avg, "Resilience Average" = r_avg)
+})
+
+avgs <- bind_rows(data)
+
+avgs
+
+years <- 2007:2020
+
+data2 <- lapply(years, function(year) {
+  v_sd <- sd(get(paste0("m_", year))$Vulnerability)
+  r_sd <- sd(get(paste0("m_", year))$Resilience)
+  tibble(Year = year, "Vulnerability SD" = v_sd, "Resilience SD" = r_sd)
+})
+
+sds <- bind_rows(data2)
+
+sds
+```
+```{r}
+avgsplot <- avgs %>% ggplot() + 
+  geom_line(aes(x = Year, y = `Vulnerability Average`, color = "Vulnerability"), size = 2)  + 
+  
+  geom_line(aes(x = Year, y = `Resilience Average`, color = "Resilience"), size = 2, ) +
+  
+  scale_color_manual(values = c("Resilience" = "blue", "Vulnerability" = "red"),
+                     labels = c("Resilience index", "Vulnerability index")) +
+  theme_light() +
+  xlim(2007, 2020) +
+  scale_x_continuous(expand = c(0, .2), breaks = seq(2007, 2020, by = 1)) +
+  scale_y_continuous(breaks = seq(-0.5, .7, by = .05)) +
+  theme(legend.position = "top",
+        panel.grid.major.x = element_line(color = "black", linetype = "dotted", size = 0.5),
+        panel.grid.major.y = element_line(color = "black", linetype = "dotted")) +
+  labs(color = "", y = "Sample Average", title = "Figure 10. Vulnerability and Resilience trends")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.4,    # Adjust vertical justification to align the text to the bottom
+    size = 3      # Adjust the font size of the text
+  )
+
+avgsplot
+
+```
+```{r}
+sdsplot <- sds %>% ggplot() + 
+  geom_line(aes(x = Year, y = `Vulnerability SD`, color = "Vulnerability"), size = 2) +
+  geom_line(aes(x = Year, y = `Resilience SD`, color = "Resilience"), size = 2) +
+  scale_color_manual(values = c("Resilience" = "lightblue", "Vulnerability" = "orange"),
+                     labels = c("Resilience index", "Vulnerability index")) +
+  theme_light() +
+  scale_x_continuous(
+    limits = c(2008, 2020),
+    expand = c(0, .2),
+    breaks = seq(2008, 2020, by = 1)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 0.3),
+    breaks = seq(-0.5, 0.7, by = 0.05)
+  ) +
+  theme(
+    legend.position = "top",
+    panel.grid.major = element_line(color = "black", linetype = "dotted", size = 0.5),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    color = "", 
+    y = "Standard deviation", 
+    title = "Figure 11. Vulnerability and Resilience standard deviation trends"
+  ) +
+  annotate(
+    "text",
+    x = Inf,
+    y = -Inf,
+    label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",
+    hjust = 1.01,
+    vjust = -0.4,
+    size = 3
+  )
+sdsplot
+
+
+```
+
+
+```{r}
+ggsave("sdsplot.png", plot = sdsplot, width = 9, height = 6, dpi = 300)
+```
+
+
+
+```{r}
+m_2014%>% filter(Country == "MNE")
+m_2015%>% filter(Country == "MNE")
+m_2016%>% filter(Country == "MNE")
+m_2020%>% filter(Country == "MNE")
+```
+
+```{r}
+mean(m_2008$Vulnerability)
+
+```
+
+```{r}
+vars_2013 %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>% filter(Country == "MNE")
+vars_2014 %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>% filter(Country == "MNE")
+vars_2015 %>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>% filter(Country == "MNE")
+vars_2016%>% mutate(Country = c("ALB","BIH","BGR","HRV","CZE","EST","GRC","HUN","LVA","LTU","MNE","MKD","POL","SRB","SVK","SVN", "ROU")) %>% filter(Country == "MNE")
+```
+
+```{r}
+for (year in 2007:2020) {
+  ggsave(filename = paste0("plot", year, ".png"), plot = plot_list[[year]],  width = 9, height = 6, dpi = 300)}
+```
+
+
+```{r}
+for (year in 2007:2020) {
+  m_year <- paste0("m_", year)
+  plot_title <- paste("Vulnerability Risk Matrix", year)
+  
+  plot <- ggplot(get(m_year), aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = Country, shape = Country), size = 4) +
+    ggtitle(plot_title) +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08, fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold") +
+    annotate(
+      "text",
+      x = Inf,      
+      y = -Inf,     
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",
+      hjust = 1.01,    
+      vjust = -0.7,    
+      size = 3     
+    ) 
+  
+  plot_filename <- paste("plotje", year, "title.png", sep = "")
+  ggsave(plot_filename, plot = plot, width = 9, height = 6, dpi = 300)
+}
+
+```
+plotcomp <- ggplot(m_2016, aes(x = Resilience , y = Vulnerability, ymax = 1, xmax = 0.6, ymin = 0, xmin = 0)) +geom_point(aes(colour = Country, shape = Country)) + ggtitle("2007-2020 Matrix") +geom_point(data = m_2020,mapping = aes(x = Resilience , y = Vulnerability,colour = Country, shape = Country)) + geom_segment(x =m_2016$Resilience, y =m_2016$Vulnerability, xend = m_2020$Resilience, yend = m_2020$Vulnerability, arrow = arrow(length=unit(0.1, 'cm'))) +
+  scale_shape_manual(values = c(1:17)) 
+plotcomp
+
+
+```{r}
+plot2020title <- ggplot(m_2008, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0)) +
+    geom_point(aes(colour = "black", shape = Country), alpha = 0.5) +
+    ggtitle("Figure X. Vulnerability Risk Matrix 2020 including shift from 2008") +
+    scale_shape_manual(values = 1:17) +
+    geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5)  +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08
+           , fill = "white", alpha = 0.9) +
+    annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+    annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+    annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+    annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold")+
+  annotate(
+    "text",
+    x = Inf,      # Set x position to Inf to place the text on the right
+    y = -Inf,     # Set y position to -Inf to place the text at the bottom
+      label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",   # Specify the text label
+    hjust = 1.01,    # Adjust horizontal justification to align the text to the right
+    vjust = -0.7,    # Adjust vertical justification to align the text to the bottom
+    size = 3     # Adjust the font size of the text
+  )+geom_point(data = m_2020,mapping = aes(x = Resilience , y = Vulnerability,colour = Country, shape = Country), size = 4) + geom_segment(data = m_2020, x =m_2008$Resilience, y =m_2008$Vulnerability, xend = m_2020$Resilience, yend = m_2020$Vulnerability, arrow = arrow(length=unit(0.1, 'cm')), alpha = 0.1)
+plot2020title
+ggsave("compplot2020title.png", plot = plot2020title, width = 9, height = 6, dpi = 300)
+```
+```{r}
+compare2020 <- ggplot(m_2008, aes(x = Resilience, y = Vulnerability, ymax = 0.5, xmax = 1, ymin = 0, xmin = 0))+
+  geom_point(data = m_2008, aes(shape = Country), color = "black", alpha = 0.1, show.legend = FALSE) +
+  ggtitle("Figure 8. Vulnerability Risk Matrix 2020 compared with 2008") +
+  scale_shape_manual(values = 1:17) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08, fill = "white", alpha = 0.9) +
+  annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+  annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+  annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+  annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold") +
+  annotate(
+    "text",
+    x = Inf, y = -Inf,
+    label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",
+    hjust = 1.01, vjust = -0.7, size = 3
+  )+
+  geom_segment(
+    data = merge(m_2008, m_2020, by = c("Country")),
+    aes(x = Resilience.x, y = Vulnerability.x, xend = Resilience.y, yend = Vulnerability.y),
+    arrow = arrow(length = unit(0.1, 'cm')),
+    alpha = 0.05
+  ) +
+  geom_point(data = m_2020, aes(x = Resilience, y = Vulnerability, color = Country, shape = Country), size = 4) 
+
+compare2020
+ggsave("compare2020.png", plot = compare2020, width = 9, height = 6, dpi = 300)
+```
+```{r}
+years <- c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)
+
+compare_plot <- ggplot() +
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5) +
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = -0.08, fill = "white", alpha = 0.9) +
+  annotate("text", x = 0.05, y = 1, label = "Worst Case", fontface = "bold") +
+  annotate("text", x = 0.95, y = 1, label = "Self Made", fontface = "bold") +
+  annotate("text", x = 0.05, y = 0, label = "Prodigal Son", fontface = "bold") +
+  annotate("text", x = 0.95, y = 0, label = "Best Case", fontface = "bold") +
+  annotate(
+    "text",
+    x = Inf, y = -Inf,
+    label = "Data sources: AEI, Fraser's Institute, UN COMTRADE, World Bank, national statistical agencies",
+    hjust = 1.01, vjust = -0.7, size = 3
+  )
+
+for (year in years) {
+  data_year <- get(paste0("m_", year))
+  
+  compare_plot <- compare_plot +
+    geom_point(data = data_year, aes(x = Resilience, y = Vulnerability, color = Country, shape = Country), size = 4) +
+    geom_path(
+      data = merge(get(paste0("m_", year)), get(paste0("m_", year +1)), by = "Country"),
+      aes(x = Resilience.x, y = Vulnerability.x, group = Country),
+      color = "blue",
+      alpha = 0.05
+    )
+}
+
+compare_plot <- compare_plot +
+  ggtitle("Figure X. Vulnerability Risk Matrix 2020 compared with 2008") +
+  scale_shape_manual(values = 1:17)
+
+compare_plot
+
+```
+

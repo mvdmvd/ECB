@@ -1,0 +1,20 @@
+
+```{r}
+r_alt <- r_all %>% filter(year !=2007)
+```
+
+```{r}
+growth_model_fe <- plm(GDPPC_growth ~  Vulnerability * Resilience + GDPPC_growth_lag + Pop_growth + Nat_rcs_rents   , data = r_all, index = c("year", "Country"), model = "within")
+
+growth_model_ran <- plm(GDPPC_growth ~  Vulnerability * Resilience + GDPPC_growth_lag  , data = r_all, index = c("year", "Country"), model = "random")
+
+phtest(growth_model_fe, growth_model_ran)
+
+summary(growth_model_ran)
+```
+
+
+```{r}
+cor(r_all$Nat_rcs_rents, r_all$GDPPC_growth_lag)
+```
+
